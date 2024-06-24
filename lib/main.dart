@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifi1
+  );
+
 }
 
 class MyApp extends StatelessWidget {
