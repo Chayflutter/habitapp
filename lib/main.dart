@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/theme/themeProvider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifi1
+    ChangeNotifierProvider(create: (context)=> Themeprovider(),
+    child: const MyApp(),
+    )
   );
 
 }
@@ -16,11 +20,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
       home: const Scaffold(),
+      theme: Provider.of<Themeprovider>(context).themeData,
     );
   }
 }
