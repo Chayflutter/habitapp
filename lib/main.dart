@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/pages/home.dart';
 import 'package:myapp/theme/themeProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: const Scaffold(),
+      home: const Home(),
       theme: Provider.of<Themeprovider>(context).themeData,
     );
   }
