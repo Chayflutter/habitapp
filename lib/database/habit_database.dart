@@ -28,6 +28,24 @@ class Habitdatabase extends ChangeNotifier {
     return settings?.firstLaunchDate;
   }
 
+final List<Habit> currentHabits = [];
+
+Future<void> addHabit(String habitName) async{
+  final newHabit = Habit()..name = habitName;
+  await isar.writeTxn(()=>isar.habits.put(newHabit));
+
+  readHabit();
+}
+
+Future<void> readHabit()async{
+  List<Habit> fetchedHabits = await isar.habits.where().findAll();
+  currentHabits.clear();
+  currentHabits.addAll(fetchedHabits);
+
+  notifyListeners();
+
+}
+
 
 
 }
