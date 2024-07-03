@@ -46,6 +46,23 @@ Future<void> readHabit()async{
 
 }
 
+Future<void> updateHabitCompletion(int id, bool isCompleted)async{
+  final habit = await isar.habits.get(id);
+
+  if(habit != null){
+    await isar.writeTxn(()async{
+      if (isCompleted && !habit.completedDays.contains(DateTime.now())) {
+        final today = DateTime.now();
+        habit.completedDays.add(
+          DateTime(today.year, today.month, today.day)
+        );
+      } else  {
+          // habit.completedDays.removeWhere(test)
+      }
+    });
+  } 
+}
+
 
 
 }
