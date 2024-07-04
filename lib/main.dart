@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/database/habit_database.dart';
 import 'package:myapp/pages/home.dart';
-import 'package:myapp/theme/themeProvider.dart';
+import 'package:myapp/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async{

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myapp/theme/themeProvider.dart';
+import 'package:myapp/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
