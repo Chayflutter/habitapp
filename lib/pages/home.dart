@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myapp/theme/theme_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:myapp/components/drawer.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,16 +13,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      drawer: Drawer(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        child: Center(
-          child: CupertinoSwitch(
-            value: Provider.of<Themeprovider>(context).isDark,
-            onChanged: (value)=>   
-             Provider.of<Themeprovider>(context, listen: false).toggleTheme(),
-            
-          ),
-        ),
+      drawer: const MyDrawer(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        child: const Icon(Icons.add),
       ),
     );
   }
