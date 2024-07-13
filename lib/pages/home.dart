@@ -12,12 +12,13 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text('thing'),),
       drawer: const MyDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
-        child: const Icon(Icons.add),
+        // elevation: 0,
+        backgroundColor: Colors.greenAccent,
+        child: const Icon(Icons.add, color: Colors.black,),
       ),
     );
   }
