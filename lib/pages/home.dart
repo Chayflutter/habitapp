@@ -8,17 +8,28 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+
 class _HomeState extends State<Home> {
+void createNewHabit() {
+  showDialog(context: context, builder: (context)=>AlertDialog());
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('thing'),),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        title: Text('thing'),
+      ),
       drawer: const MyDrawer(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        // elevation: 0,
-        backgroundColor: Colors.greenAccent,
-        child: const Icon(Icons.add, color: Colors.black,),
+        onPressed: createNewHabit,
+        elevation: 0,
+        backgroundColor: Color.fromARGB(255, 20, 247, 137),
+        child: const Icon(
+          Icons.add,
+          color: Colors.black,
+          size: 28,
+        ),
       ),
     );
   }
