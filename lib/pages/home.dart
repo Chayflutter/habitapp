@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/components/drawer.dart';
 import 'package:myapp/database/habit_database.dart';
+import 'package:myapp/models/habit.dart';
+import 'package:myapp/util/habitUtil.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -11,6 +13,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    Provider.of<Habitdatabase>(context, listen: false).readHabit();
+    super.initState();
+  }
+
   final TextEditingController textController = TextEditingController();
 
   void createNewHabit() {
@@ -31,16 +39,16 @@ class _HomeState extends State<Home> {
 
                     Navigator.pop(context);
                     textController.clear();
-
                   },
-                    child: Text("Save"),
+                  child: const Text("Save"),
                 ),
-                MaterialButton(onPressed: () {
+                MaterialButton(
+                  onPressed: () {
                     Navigator.pop(context);
                     textController.clear();
-
-                },color: Colors.amber,
-                    child: Text("Cancel"),
+                  },
+                  color: Colors.amber,
+                  child: const Text("Cancel"),
                 )
               ],
             ));
@@ -64,6 +72,21 @@ class _HomeState extends State<Home> {
           size: 28,
         ),
       ),
+      body: _buildHabitList(),
     );
+  }
+
+  Widget _buildHabitList() {
+    final habitDatabase = context.watch<Habitdatabase>();
+    List<Habit> currentHabits = habitDatabase.currentHabits;
+    return ListView.builder(
+        itemCount: currentHabits.length,
+        itemBuilder: (context, index) {
+          final habit = currentHabits[index];
+          bool isCompletedToday = isHabitCompletedToday(habit.completedDays);
+          return ListTile(
+            title: Text(habit.name),
+          );
+        });
   }
 }
