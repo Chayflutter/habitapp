@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/components/drawer.dart';
+import 'package:myapp/components/habitTile.dart';
 import 'package:myapp/database/habit_database.dart';
 import 'package:myapp/models/habit.dart';
 import 'package:myapp/util/habitUtil.dart';
@@ -54,6 +55,12 @@ class _HomeState extends State<Home> {
             ));
   }
 
+  void checkHabitOnOFF(bool? val, Habit habit) {
+    if (val != null) {
+      context.read<Habitdatabase>().updateHabitCompletion(habit.id, val);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +92,11 @@ class _HomeState extends State<Home> {
           final habit = currentHabits[index];
           bool isCompletedToday = isHabitCompletedToday(habit.completedDays);
           return ListTile(
-            title: Text(habit.name),
+            title: MyHabitTile(
+              isCompleted: isCompletedToday,
+              text: habit.name,
+              onChanged: (value) => checkHabitOnOFF(value, habit),
+            ),
           );
         });
   }
