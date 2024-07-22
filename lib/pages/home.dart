@@ -61,12 +61,72 @@ class _HomeState extends State<Home> {
     }
   }
 
+  void editHabit(Habit habit) {
+    textController.text = habit.name;
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: TextField(
+                controller: textController,
+              ),
+              actions: [
+                MaterialButton(
+                  onPressed: () {
+                    String newHabitName = textController.text;
+
+                    context.read<Habitdatabase>().updateHabitName(habit.id, newHabitName);
+
+                    Navigator.pop(context);
+                    textController.clear();
+                  },
+                  child: const Text("Save"),
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    textController.clear();
+                  },
+                  color: Colors.amber,
+                  child: const Text("Cancel"),
+                )
+              ],
+            ));
+  }
+
+
+void deleteHabit(Habit habit){
+  showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text("Are you sure you want to delete this habit?"),
+              actions: [
+                MaterialButton(
+                  onPressed: () {
+                    
+                    context.read<Habitdatabase>().deleteHabit(habit.id);
+
+                    Navigator.pop(context);
+                    
+                  },
+                  child: const Text("Delete"),
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    
+                  },
+                  color: Colors.amber,
+                  child: const Text("Cancel"),
+                )
+              ],
+            ));
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text('thing'),
+        title: Text('Habit tracker'),
       ),
       drawer: const MyDrawer(),
       floatingActionButton: FloatingActionButton(
@@ -93,6 +153,8 @@ class _HomeState extends State<Home> {
           bool isCompletedToday = isHabitCompletedToday(habit.completedDays);
           return ListTile(
             title: MyHabitTile(
+              editHabit: (context)=>editHabit(habit),
+              deleteHabit: (context)=>deleteHabit(habit),
               isCompleted: isCompletedToday,
               text: habit.name,
               onChanged: (value) => checkHabitOnOFF(value, habit),
