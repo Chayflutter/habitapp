@@ -23,8 +23,8 @@ class MyHabitTile extends StatelessWidget {
         SlidableAction(
           onPressed: editHabit,
           backgroundColor: Colors.grey.shade800,
-          icon: Icons.settings,
-          borderRadius: BorderRadius.circular(8),
+          icon: Icons.edit,
+          borderRadius: BorderRadius.circular(10),
         ),
         
         SlidableAction(
@@ -57,8 +57,8 @@ class MyHabitTile extends StatelessWidget {
             ),
             leading: Checkbox(
               value: isCompleted,
-              activeColor: Colors.white,
-              checkColor: Colors.black,
+              activeColor: isCompleted ? Colors.green : Colors.white,
+              checkColor: Colors.white ,
               onChanged: onChanged,
             ),
           ),

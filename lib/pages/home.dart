@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/components/drawer.dart';
 import 'package:myapp/components/habitTile.dart';
+import 'package:myapp/components/heatmap.dart';
 import 'package:myapp/database/habit_database.dart';
 import 'package:myapp/models/habit.dart';
 import 'package:myapp/util/habitUtil.dart';
@@ -48,7 +49,7 @@ class _HomeState extends State<Home> {
                     Navigator.pop(context);
                     textController.clear();
                   },
-                  color: Colors.amber,
+                  color: Colors.amber.shade400,
                   child: const Text("Cancel"),
                 )
               ],
@@ -74,7 +75,9 @@ class _HomeState extends State<Home> {
                   onPressed: () {
                     String newHabitName = textController.text;
 
-                    context.read<Habitdatabase>().updateHabitName(habit.id, newHabitName);
+                    context
+                        .read<Habitdatabase>()
+                        .updateHabitName(habit.id, newHabitName);
 
                     Navigator.pop(context);
                     textController.clear();
@@ -93,41 +96,36 @@ class _HomeState extends State<Home> {
             ));
   }
 
-
-void deleteHabit(Habit habit){
-  showDialog(
+  void deleteHabit(Habit habit) {
+    showDialog(
         context: context,
         builder: (context) => AlertDialog(
               title: const Text("Are you sure you want to delete this habit?"),
               actions: [
                 MaterialButton(
                   onPressed: () {
-                    
                     context.read<Habitdatabase>().deleteHabit(habit.id);
 
                     Navigator.pop(context);
-                    
                   },
                   child: const Text("Delete"),
                 ),
                 MaterialButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    
                   },
                   color: Colors.amber,
                   child: const Text("Cancel"),
                 )
               ],
             ));
-}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        title: Text('Habit tracker'),
-      ),
+      appBar: AppBar(),
       drawer: const MyDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: createNewHabit,
@@ -139,8 +137,20 @@ void deleteHabit(Habit habit){
           size: 28,
         ),
       ),
-      body: _buildHabitList(),
+      body: ListView(children: [_buildHeatMap(), _buildHabitList()]),
     );
+  }
+
+  Widget _buildHeatMap() {
+    final habitDatabase = context.watch<Habitdatabase>();
+    List<Habit> currentHabits = habitDatabase.currentHabits;
+    return FutureBuilder<DateTime?>(
+        future: habitDatabase.getFirstLaunchDate(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData){return MyHeatMap(startDate: snapshot.data!, datasets: )}else{
+            return Container();
+          }
+        });
   }
 
   Widget _buildHabitList() {
@@ -153,8 +163,8 @@ void deleteHabit(Habit habit){
           bool isCompletedToday = isHabitCompletedToday(habit.completedDays);
           return ListTile(
             title: MyHabitTile(
-              editHabit: (context)=>editHabit(habit),
-              deleteHabit: (context)=>deleteHabit(habit),
+              editHabit: (context) => editHabit(habit),
+              deleteHabit: (context) => deleteHabit(habit),
               isCompleted: isCompletedToday,
               text: habit.name,
               onChanged: (value) => checkHabitOnOFF(value, habit),
