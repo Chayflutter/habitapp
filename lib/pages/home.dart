@@ -35,6 +35,13 @@ class _HomeState extends State<Home> {
               actions: [
                 MaterialButton(
                   onPressed: () {
+                    Navigator.pop(context);
+                    textController.clear();
+                  },
+                  child: const Text("Cancel"),
+                ),
+                MaterialButton(
+                  onPressed: () {
                     String newHabitName = textController.text;
 
                     context.read<Habitdatabase>().addHabit(newHabitName);
@@ -42,16 +49,9 @@ class _HomeState extends State<Home> {
                     Navigator.pop(context);
                     textController.clear();
                   },
+                  color: Colors.amber.shade400,
                   child: const Text("Save"),
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    textController.clear();
-                  },
-                  color: Colors.amber.shade400,
-                  child: const Text("Cancel"),
-                )
               ],
             ));
   }
@@ -147,7 +147,11 @@ class _HomeState extends State<Home> {
     return FutureBuilder<DateTime?>(
         future: habitDatabase.getFirstLaunchDate(),
         builder: (context, snapshot) {
-          if(snapshot.hasData){return MyHeatMap(startDate: snapshot.data!, datasets: )}else{
+          if (snapshot.hasData) {
+            return MyHeatMap(
+                startDate: snapshot.data!,
+                datasets: prepareHeatMapData(currentHabits));
+          } else {
             return Container();
           }
         });
@@ -158,6 +162,8 @@ class _HomeState extends State<Home> {
     List<Habit> currentHabits = habitDatabase.currentHabits;
     return ListView.builder(
         itemCount: currentHabits.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           final habit = currentHabits[index];
           bool isCompletedToday = isHabitCompletedToday(habit.completedDays);
